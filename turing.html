@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Turing Test — ConSynth-X</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">ConSynth-X Validation</a>
+    <div class="navbar-links">
+      <a href="index.html">Home</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </div>
+  </nav>
+
+  <div class="container" id="task-area" data-task="turing">
+    <div class="progress-bar-container">
+      <div class="progress-bar"><div class="progress-bar-fill" id="progress-fill"></div></div>
+      <span class="progress-text" id="progress-text">0 / 0</span>
+    </div>
+
+    <div class="task-image-container">
+      <img id="task-image" src="" alt="Evaluate this image">
+    </div>
+
+    <h3 style="text-align:center;margin-bottom:0.5rem">Is this image Real or Synthetic?</h3>
+
+    <div class="response-buttons">
+      <button class="response-btn" onclick="submitTuring('real')">
+        Real Photo
+        <span class="key-hint">Press <kbd>R</kbd></span>
+      </button>
+      <button class="response-btn" onclick="submitTuring('synthetic')">
+        AI-Generated
+        <span class="key-hint">Press <kbd>S</kbd></span>
+      </button>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+  <script>loadTuring();</script>
+</body>
+</html>

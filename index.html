@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ConSynth-X Validation</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">ConSynth-X Validation</a>
+    <div class="navbar-links">
+      <a href="tutorial.html">Tutorial</a>
+      <a href="dashboard.html" id="nav-admin" style="display:none">Dashboard</a>
+      <span id="welcome-user" style="color:var(--text-muted);font-size:0.9rem"></span>
+      <a href="#" onclick="logout()">Logout</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h2 style="margin-bottom:0.5rem">Evaluation Tasks</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem">
+      Please complete all three tasks. Read the <a href="tutorial.html">tutorial</a> first.
+    </p>
+
+    <div class="task-cards">
+      <a href="turing.html" class="task-card">
+        <h3>1. Turing Test</h3>
+        <p>Is this image real or AI-generated?</p>
+        <div class="task-progress" id="turing-progress">Loading...</div>
+      </a>
+      <a href="realism.html" class="task-card">
+        <h3>2. Realism Rating</h3>
+        <p>Rate image realism on a 1-5 scale (MOS).</p>
+        <div class="task-progress" id="realism-progress">Loading...</div>
+      </a>
+      <a href="recognition.html" class="task-card">
+        <h3>3. Condition Recognition</h3>
+        <p>What weather/lighting condition is shown?</p>
+        <div class="task-progress" id="recognition-progress">Loading...</div>
+      </a>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+  <script>loadIndex();</script>
+</body>
+</html>

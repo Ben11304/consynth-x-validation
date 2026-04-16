@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorial — ConSynth-X Validation</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">ConSynth-X Validation</a>
+    <div class="navbar-links">
+      <a href="tutorial.html" class="active">Tutorial</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h2 style="margin-bottom:1.5rem">How to Evaluate</h2>
+
+    <div class="tutorial-step">
+      <div class="tutorial-step-num">1</div>
+      <div class="tutorial-step-content">
+        <h3>Turing Test</h3>
+        <p>You will see construction site images one at a time. Decide whether each image is a <strong>real photograph</strong> or <strong>AI-generated (synthetic)</strong>. Use keyboard shortcuts: <kbd>R</kbd> = Real, <kbd>S</kbd> = Synthetic.</p>
+      </div>
+    </div>
+
+    <div class="tutorial-step">
+      <div class="tutorial-step-num">2</div>
+      <div class="tutorial-step-content">
+        <h3>Realism Rating (MOS)</h3>
+        <p>Rate each synthetic image on a scale of <strong>1 (very unrealistic)</strong> to <strong>5 (indistinguishable from real)</strong>. Focus on: artifact presence, lighting consistency, object coherence, and overall plausibility. Use keyboard <kbd>1</kbd>-<kbd>5</kbd> then <kbd>Enter</kbd>.</p>
+      </div>
+    </div>
+
+    <div class="tutorial-step">
+      <div class="tutorial-step-num">3</div>
+      <div class="tutorial-step-content">
+        <h3>Condition Recognition</h3>
+        <p>Identify the <strong>weather or lighting condition</strong> shown in each synthetic image. Choose from: Clear, Rain, Snow, Night, Night+Rain, Night+Snow, Fog, or Small/Far objects.</p>
+      </div>
+    </div>
+
+    <div class="tutorial-step">
+      <div class="tutorial-step-num">!</div>
+      <div class="tutorial-step-content">
+        <h3>Important Notes</h3>
+        <p>Take your time with each image. There is no time limit. Your response time is recorded for analysis but does not affect the study. Try to be consistent in your ratings. If unsure, go with your first impression.</p>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:2rem">
+      <a href="index.html" class="btn btn-primary btn-lg">Start Evaluating</a>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

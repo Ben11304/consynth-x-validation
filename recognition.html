@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Condition Recognition — ConSynth-X</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">ConSynth-X Validation</a>
+    <div class="navbar-links">
+      <a href="index.html">Home</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </div>
+  </nav>
+
+  <div class="container" id="task-area" data-task="recognition">
+    <div class="progress-bar-container">
+      <div class="progress-bar"><div class="progress-bar-fill" id="progress-fill"></div></div>
+      <span class="progress-text" id="progress-text">0 / 0</span>
+    </div>
+
+    <div class="task-image-container">
+      <img id="task-image" src="" alt="Identify condition">
+    </div>
+
+    <h3 style="text-align:center;margin-bottom:0.5rem">What condition is shown?</h3>
+
+    <div class="condition-grid">
+      <div class="condition-option" onclick="selectCondition(this,'clear')">Clear / Original</div>
+      <div class="condition-option" onclick="selectCondition(this,'rain')">Rain</div>
+      <div class="condition-option" onclick="selectCondition(this,'snow')">Snow</div>
+      <div class="condition-option" onclick="selectCondition(this,'night')">Night</div>
+      <div class="condition-option" onclick="selectCondition(this,'night_rain')">Night + Rain</div>
+      <div class="condition-option" onclick="selectCondition(this,'night_snow')">Night + Snow</div>
+      <div class="condition-option" onclick="selectCondition(this,'fog')">Fog</div>
+      <div class="condition-option" onclick="selectCondition(this,'small')">Small / Far objects</div>
+    </div>
+
+    <div style="text-align:center">
+      <button class="btn btn-primary btn-lg" id="submit-recognition" disabled onclick="submitRecognition()">Submit</button>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+  <script>loadRecognition();</script>
+</body>
+</html>
