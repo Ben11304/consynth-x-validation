@@ -67,7 +67,7 @@ let turingStart;
 async function loadTuring() {
   if (!requireAuth()) return;
   const data = await api("/api/task/turing");
-  if (!data || data.done) {
+  if (!data || data.done === true || !data.image) {
     document.getElementById("task-area").innerHTML =
       '<div class="complete-container"><div class="complete-icon">&#10003;</div><h2>Turing Test Complete!</h2><p>You have rated all images.</p><a href="index.html" class="btn btn-primary">Back to Home</a></div>';
     return;
@@ -99,7 +99,7 @@ let realismStart;
 async function loadRealism() {
   if (!requireAuth()) return;
   const data = await api("/api/task/realism");
-  if (!data || data.done) {
+  if (!data || data.done === true || !data.image) {
     document.getElementById("task-area").innerHTML =
       '<div class="complete-container"><div class="complete-icon">&#10003;</div><h2>Realism Rating Complete!</h2><p>You have rated all images.</p><a href="index.html" class="btn btn-primary">Back to Home</a></div>';
     return;
@@ -140,7 +140,7 @@ let recognitionStart, selectedCondition = null;
 async function loadRecognition() {
   if (!requireAuth()) return;
   const data = await api("/api/task/recognition");
-  if (!data || data.done) {
+  if (!data || data.done === true || !data.image) {
     document.getElementById("task-area").innerHTML =
       '<div class="complete-container"><div class="complete-icon">&#10003;</div><h2>Condition Recognition Complete!</h2><p>You have rated all images.</p><a href="index.html" class="btn btn-primary">Back to Home</a></div>';
     return;
