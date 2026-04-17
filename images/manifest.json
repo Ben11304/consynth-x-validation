@@ -152,60 +152,30 @@
   {
     "filename": "original/0003498.jpg",
     "condition": "original",
-    "source": "synthetic",
+    "source": "real",
     "dataset": ""
   },
   {
     "filename": "original/0003601.jpg",
     "condition": "original",
-    "source": "synthetic",
+    "source": "real",
     "dataset": ""
   },
   {
     "filename": "original/0003761.jpg",
     "condition": "original",
-    "source": "synthetic",
+    "source": "real",
     "dataset": ""
   },
   {
     "filename": "original/0003875.jpg",
     "condition": "original",
-    "source": "synthetic",
+    "source": "real",
     "dataset": ""
   },
   {
     "filename": "original/0004810.jpg",
     "condition": "original",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "real_weather/hd1081.jpg",
-    "condition": "real_weather",
-    "source": "real",
-    "dataset": ""
-  },
-  {
-    "filename": "real_weather/hd1248.jpg",
-    "condition": "real_weather",
-    "source": "real",
-    "dataset": ""
-  },
-  {
-    "filename": "real_weather/hd1466.jpg",
-    "condition": "real_weather",
-    "source": "real",
-    "dataset": ""
-  },
-  {
-    "filename": "real_weather/hd1740.jpg",
-    "condition": "real_weather",
-    "source": "real",
-    "dataset": ""
-  },
-  {
-    "filename": "real_weather/hd1978.jpg",
-    "condition": "real_weather",
     "source": "real",
     "dataset": ""
   },
