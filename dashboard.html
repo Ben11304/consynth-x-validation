@@ -13,53 +13,88 @@
     <a href="index.html" class="navbar-brand">ConSynth<span class="highlight">-X</span> Validation</a>
     <div class="navbar-links">
       <a href="index.html">Home</a>
+      <a href="dashboard.html" class="active">Dashboard</a>
       <a href="#" onclick="logout()">Logout</a>
     </div>
   </nav>
 
   <div class="container-wide">
-    <h2 style="margin-bottom:1.5rem">Admin Dashboard</h2>
+    <h2 style="font-family:var(--font-display);font-weight:700;margin-bottom:0.5rem">Admin Dashboard</h2>
+    <p style="color:var(--text-muted);font-family:var(--font-mono);font-size:0.8rem;margin-bottom:2rem">MANAGE EVALUATORS &amp; MONITOR RESULTS</p>
 
     <!-- Stats -->
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-value" id="stat-images">0</div><div class="stat-label">Images</div></div>
       <div class="stat-card"><div class="stat-value" id="stat-users">0</div><div class="stat-label">Evaluators</div></div>
-      <div class="stat-card"><div class="stat-value" id="stat-turing">0</div><div class="stat-label">Turing Responses</div></div>
-      <div class="stat-card"><div class="stat-value" id="stat-realism">0</div><div class="stat-label">Realism Responses</div></div>
-      <div class="stat-card"><div class="stat-value" id="stat-recognition">0</div><div class="stat-label">Recognition Responses</div></div>
+      <div class="stat-card"><div class="stat-value" id="stat-turing">0</div><div class="stat-label">Turing</div></div>
+      <div class="stat-card"><div class="stat-value" id="stat-realism">0</div><div class="stat-label">Realism</div></div>
+      <div class="stat-card"><div class="stat-value" id="stat-recognition">0</div><div class="stat-label">Recognition</div></div>
+      <div class="stat-card"><div class="stat-value" id="stat-avg-ms">-</div><div class="stat-label">Avg Response ms</div></div>
     </div>
 
     <!-- Actions -->
     <div class="card">
       <h3 class="card-title">Actions</h3>
-      <button class="btn btn-primary" onclick="loadImages()">Load Images from Manifest</button>
-      <button class="btn btn-outline" onclick="exportCSV('turing')">Export Turing CSV</button>
-      <button class="btn btn-outline" onclick="exportCSV('realism')">Export Realism CSV</button>
-      <button class="btn btn-outline" onclick="exportCSV('recognition')">Export Recognition CSV</button>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="loadImages()">Load Images from Manifest</button>
+        <button class="btn btn-outline" onclick="exportCSV('turing')">Export Turing CSV</button>
+        <button class="btn btn-outline" onclick="exportCSV('realism')">Export Realism CSV</button>
+        <button class="btn btn-outline" onclick="exportCSV('recognition')">Export Recognition CSV</button>
+      </div>
     </div>
 
     <!-- Users -->
     <div class="card">
-      <h3 class="card-title">Evaluator Progress</h3>
-      <table>
-        <thead><tr><th>Username</th><th>Email</th><th>Turing</th><th>Realism</th><th>Recognition</th></tr></thead>
-        <tbody id="users-tbody"></tbody>
-      </table>
+      <h3 class="card-title">Evaluator Management</h3>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>Username</th><th>Email</th><th>Turing</th><th>Realism</th><th>Recognition</th><th>Joined</th><th>Actions</th></tr></thead>
+          <tbody id="users-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- User detail panel -->
+    <div class="card" id="user-detail-panel" style="display:none"></div>
+
+    <!-- Fooling Rate -->
+    <div class="card">
+      <h3 class="card-title">Fooling Rate by Condition</h3>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>Condition</th><th>Source</th><th>Fooling Rate</th><th>Fooled / Total</th></tr></thead>
+          <tbody id="fooling-tbody"></tbody>
+        </table>
+      </div>
     </div>
 
     <!-- MOS -->
     <div class="card">
       <h3 class="card-title">Mean Opinion Score by Condition</h3>
-      <table>
-        <thead><tr><th>Condition</th><th>Mean Score</th><th>Responses</th></tr></thead>
-        <tbody id="mos-tbody"></tbody>
-      </table>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>Condition</th><th>Mean Score</th><th>Responses</th></tr></thead>
+          <tbody id="mos-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Per-image stats -->
+    <div class="card">
+      <h3 class="card-title">Per-Image Statistics</h3>
+      <div style="overflow-x:auto;max-height:400px;overflow-y:auto">
+        <table>
+          <thead><tr><th>Filename</th><th>Condition</th><th>Turing N</th><th>Fooling Rate</th><th>Avg MOS</th></tr></thead>
+          <tbody id="image-stats-tbody"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
   <script src="js/config.js"></script>
   <script src="js/app.js"></script>
   <script>loadDashboard();</script>
+
   <footer class="site-footer">
     <strong>ConSynth-X</strong> — Synthetic Construction Image Benchmark<br>
     Viet Huy Duong &amp; Ruoxin Xiong<br>
