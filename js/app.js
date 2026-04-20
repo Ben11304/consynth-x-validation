@@ -42,10 +42,30 @@ async function api(path, opts = {}) {
   const token = getToken();
   const headers = { "Content-Type": "application/json", ...(opts.headers || {}) };
   if (token) headers["Authorization"] = "Bearer " + token;
-  const res = await fetch(API_BASE + path, { ...opts, headers });
-  if (res.status === 401) { logout(); return null; }
-  if (res.headers.get("Content-Type")?.includes("text/csv")) return res;
-  return res.json();
+  try {
+    const res = await fetch(API_BASE + path, { ...opts, headers });
+    if (res.status === 401) { logout(); return null; }
+    if (res.headers.get("Content-Type")?.includes("text/csv")) return res;
+    const body = await res.json().catch(() => ({ error: "invalid_response" }));
+    if (!res.ok) body._httpError = res.status;
+    return body;
+  } catch (e) {
+    return { error: "network_error", message: String(e?.message || e) };
+  }
+}
+
+// Retry POST with exponential backoff — prevents silent data loss on
+// transient network failures during task submission.
+async function apiPostRetry(path, body, attempts = 3) {
+  let lastErr = null;
+  for (let i = 0; i < attempts; i++) {
+    const r = await api(path, { method: "POST", body: JSON.stringify(body) });
+    if (r && r.status === "ok") return r;
+    lastErr = r;
+    if (r?._httpError === 400) return r; // don't retry validation errors
+    await new Promise(res => setTimeout(res, 500 * Math.pow(2, i)));
+  }
+  return lastErr;
 }
 
 // ---------------------------------------------------------------------------
@@ -135,6 +155,26 @@ async function loadIndex() {
 }
 
 // ---------------------------------------------------------------------------
+// Submission guard — prevents double-submit from rapid clicks / key presses
+// ---------------------------------------------------------------------------
+let _submitting = false;
+function beginSubmit() { if (_submitting) return false; _submitting = true; return true; }
+function endSubmit()   { _submitting = false; }
+
+function showSubmitError(msg) {
+  alert(`⚠ Submission failed: ${msg}\n\nYour last answer was NOT saved. Please retry.`);
+}
+
+function wireTaskImage(img, onReady) {
+  img.onload = () => { onReady(); };
+  img.onerror = () => {
+    alert("⚠ Image failed to load. Skipping to next. If this persists, contact admin.");
+    // Force advance — we won't record this response since user can't actually see it
+    onReady(true /* skipNoAnswer */);
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Turing Test
 // ---------------------------------------------------------------------------
 let turingStart;
@@ -151,19 +191,33 @@ async function loadTuring() {
   const pct = data.total > 0 ? (data.done / data.total * 100) : 0;
   document.getElementById("progress-fill").style.width = pct + "%";
   document.getElementById("progress-text").textContent = `${data.done} / ${data.total}`;
-  document.getElementById("task-image").src = "images/" + data.image.filename;
-  document.getElementById("task-image").dataset.imageId = data.image.id;
-  turingStart = Date.now();
+  const img = document.getElementById("task-image");
+  img.dataset.imageId = data.image.id;
+  turingStart = null; // start timer only after img actually renders
+  img.onload = () => { turingStart = Date.now(); };
+  img.onerror = () => {
+    alert("⚠ Image failed to load. Reloading next image.");
+    loadTuring();
+  };
+  img.src = "images/" + data.image.filename;
 }
 
 async function submitTuring(answer) {
-  const imageId = parseInt(document.getElementById("task-image").dataset.imageId);
-  const ms = Date.now() - turingStart;
-  await api("/api/task/turing", {
-    method: "POST",
-    body: JSON.stringify({ image_id: imageId, answer, response_ms: ms }),
-  });
-  loadTuring();
+  if (!beginSubmit()) return;
+  const img = document.getElementById("task-image");
+  try {
+    if (!turingStart) return; // image not ready yet
+    const imageId = parseInt(img.dataset.imageId);
+    const ms = Date.now() - turingStart;
+    const r = await apiPostRetry("/api/task/turing", { image_id: imageId, answer, response_ms: ms });
+    if (!r || r.status !== "ok") {
+      showSubmitError(r?.message || r?.error || "unknown");
+      return;
+    }
+    await loadTuring();
+  } finally {
+    endSubmit();
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -183,9 +237,15 @@ async function loadRealism() {
   const pct = data.total > 0 ? (data.done / data.total * 100) : 0;
   document.getElementById("progress-fill").style.width = pct + "%";
   document.getElementById("progress-text").textContent = `${data.done} / ${data.total}`;
-  document.getElementById("task-image").src = "images/" + data.image.filename;
-  document.getElementById("task-image").dataset.imageId = data.image.id;
-  realismStart = Date.now();
+  const img = document.getElementById("task-image");
+  img.dataset.imageId = data.image.id;
+  realismStart = null;
+  img.onload = () => { realismStart = Date.now(); };
+  img.onerror = () => {
+    alert("⚠ Image failed to load. Reloading next image.");
+    loadRealism();
+  };
+  img.src = "images/" + data.image.filename;
 
   document.querySelectorAll('input[name="score"]').forEach(r => r.checked = false);
   document.getElementById("submit-realism").disabled = true;
@@ -196,14 +256,23 @@ function selectScore() {
 }
 
 async function submitRealism() {
-  const score = parseInt(document.querySelector('input[name="score"]:checked').value);
-  const imageId = parseInt(document.getElementById("task-image").dataset.imageId);
-  const ms = Date.now() - realismStart;
-  await api("/api/task/realism", {
-    method: "POST",
-    body: JSON.stringify({ image_id: imageId, score, response_ms: ms }),
-  });
-  loadRealism();
+  if (!beginSubmit()) return;
+  try {
+    if (!realismStart) return;
+    const sel = document.querySelector('input[name="score"]:checked');
+    if (!sel) return;
+    const score = parseInt(sel.value);
+    const imageId = parseInt(document.getElementById("task-image").dataset.imageId);
+    const ms = Date.now() - realismStart;
+    const r = await apiPostRetry("/api/task/realism", { image_id: imageId, score, response_ms: ms });
+    if (!r || r.status !== "ok") {
+      showSubmitError(r?.message || r?.error || "unknown");
+      return;
+    }
+    await loadRealism();
+  } finally {
+    endSubmit();
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -223,9 +292,15 @@ async function loadRecognition() {
   const pct = data.total > 0 ? (data.done / data.total * 100) : 0;
   document.getElementById("progress-fill").style.width = pct + "%";
   document.getElementById("progress-text").textContent = `${data.done} / ${data.total}`;
-  document.getElementById("task-image").src = "images/" + data.image.filename;
-  document.getElementById("task-image").dataset.imageId = data.image.id;
-  recognitionStart = Date.now();
+  const img = document.getElementById("task-image");
+  img.dataset.imageId = data.image.id;
+  recognitionStart = null;
+  img.onload = () => { recognitionStart = Date.now(); };
+  img.onerror = () => {
+    alert("⚠ Image failed to load. Reloading next image.");
+    loadRecognition();
+  };
+  img.src = "images/" + data.image.filename;
   selectedCondition = null;
 
   document.querySelectorAll(".condition-option").forEach(el => el.classList.remove("selected"));
@@ -240,13 +315,20 @@ function selectCondition(el, value) {
 }
 
 async function submitRecognition() {
-  const imageId = parseInt(document.getElementById("task-image").dataset.imageId);
-  const ms = Date.now() - recognitionStart;
-  await api("/api/task/recognition", {
-    method: "POST",
-    body: JSON.stringify({ image_id: imageId, answer: selectedCondition, response_ms: ms }),
-  });
-  loadRecognition();
+  if (!beginSubmit()) return;
+  try {
+    if (!recognitionStart || !selectedCondition) return;
+    const imageId = parseInt(document.getElementById("task-image").dataset.imageId);
+    const ms = Date.now() - recognitionStart;
+    const r = await apiPostRetry("/api/task/recognition", { image_id: imageId, answer: selectedCondition, response_ms: ms });
+    if (!r || r.status !== "ok") {
+      showSubmitError(r?.message || r?.error || "unknown");
+      return;
+    }
+    await loadRecognition();
+  } finally {
+    endSubmit();
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -418,9 +500,13 @@ async function exportCSV(task) {
 }
 
 // ---------------------------------------------------------------------------
-// Keyboard shortcuts
+// Keyboard shortcuts — suppress when typing in an input / during submission
 // ---------------------------------------------------------------------------
 document.addEventListener("keydown", (e) => {
+  if (_submitting) return;
+  const active = document.activeElement;
+  if (active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA") && active.type !== "radio") return;
+
   if (document.getElementById("task-image")?.closest("[data-task='turing']")) {
     if (e.key === "r" || e.key === "R") submitTuring("real");
     if (e.key === "s" || e.key === "S") submitTuring("synthetic");
@@ -428,12 +514,12 @@ document.addEventListener("keydown", (e) => {
   if (document.getElementById("task-image")?.closest("[data-task='realism']")) {
     const n = parseInt(e.key);
     if (n >= 1 && n <= 5) {
-      document.querySelector(`input[name="score"][value="${n}"]`).checked = true;
-      selectScore();
+      const radio = document.querySelector(`input[name="score"][value="${n}"]`);
+      if (radio) { radio.checked = true; selectScore(); }
     }
     if (e.key === "Enter") {
       const btn = document.getElementById("submit-realism");
-      if (!btn.disabled) submitRealism();
+      if (btn && !btn.disabled) submitRealism();
     }
   }
 });
