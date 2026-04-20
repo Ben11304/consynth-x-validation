@@ -13,9 +13,7 @@ const RECOGNITION_TRUTH = {
   "weather_style_snow_0":    ["snow"],
   "weather_style_snow_1":    ["snow"],
   "weather_style_snow_2":    ["snow"],
-  "weather_diff_rain_0":     ["rain"],
-  "weather_diff_rain_1":     ["rain"],
-  "weather_diff_snow_0":     ["snow"],
+  "weather_diff_rain":       ["rain"],
   "weather_diff_snow_heavy": ["snow", "snow_heavy"],
   "weather_diff_snow_light": ["snow", "snow_light"],
 };
