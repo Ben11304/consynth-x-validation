@@ -19,14 +19,20 @@
       <form onsubmit="handleLogin(event)">
         <div class="form-group">
           <label for="username">Username</label>
-          <input type="text" id="username" required placeholder="Enter a unique name">
-          <small id="username-hint" style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);margin-top:0.3rem;display:block"></small>
+          <input type="text" id="username" required placeholder="Choose a unique name" oninput="onUsernameChange()">
+          <small id="username-hint" style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);margin-top:0.3rem;display:block">
+            Each evaluator must use a new, unique name. Usernames cannot be reused.
+          </small>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="password-group" style="display:none">
+          <label for="password">Admin password</label>
+          <input type="password" id="password" autocomplete="current-password" placeholder="Required for admin">
+        </div>
+        <div class="form-group" id="email-group">
           <label for="email">Email</label>
           <input type="email" id="email" placeholder="your@email.com">
         </div>
-        <div class="form-group" style="display:flex;align-items:center;gap:0.5rem;margin-top:0.5rem">
+        <div class="form-group" id="email-private-group" style="display:flex;align-items:center;gap:0.5rem;margin-top:0.5rem">
           <input type="checkbox" id="email-private" style="width:auto;accent-color:var(--accent-orange)">
           <label for="email-private" style="text-transform:none;letter-spacing:0;font-size:0.85rem;color:var(--text-secondary);margin:0">
             Keep my email private (will not appear in published data)
@@ -34,16 +40,6 @@
         </div>
         <button type="submit" class="btn btn-primary btn-block" id="login-btn" style="margin-top:1.25rem">Start Evaluation</button>
       </form>
-
-      <!-- Confirmation dialog for existing username -->
-      <div id="confirm-dialog" style="display:none;margin-top:1.5rem;padding:1.25rem;border:1px solid var(--accent-amber);border-radius:var(--radius-lg);background:rgba(255,184,0,0.08)">
-        <p style="font-size:0.9rem;color:var(--accent-amber);margin-bottom:0.5rem;font-weight:600">This username already exists</p>
-        <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:1rem">If this is you, click "Continue" to resume your session. Otherwise, choose a different username.</p>
-        <div style="display:flex;gap:0.75rem">
-          <button class="btn btn-primary" onclick="confirmLogin()">Continue as this user</button>
-          <button class="btn btn-outline" onclick="cancelConfirm()">Change username</button>
-        </div>
-      </div>
     </div>
   </div>
 

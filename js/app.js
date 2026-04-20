@@ -69,66 +69,55 @@ async function apiPostRetry(path, body, attempts = 3) {
 }
 
 // ---------------------------------------------------------------------------
-// Login page — with username conflict check & email privacy
+// Login page — strict unique usernames; admin requires password
 // ---------------------------------------------------------------------------
-let _pendingLogin = null;
+function isAdminUsername(s) {
+  return (s || "").trim().toLowerCase() === "admin";
+}
+
+function onUsernameChange() {
+  const uname = document.getElementById("username").value;
+  const pwGroup = document.getElementById("password-group");
+  const emailGroup = document.getElementById("email-group");
+  const emailPrivGroup = document.getElementById("email-private-group");
+  const admin = isAdminUsername(uname);
+  if (pwGroup) pwGroup.style.display = admin ? "" : "none";
+  if (emailGroup) emailGroup.style.display = admin ? "none" : "";
+  if (emailPrivGroup) emailPrivGroup.style.display = admin ? "none" : "flex";
+}
 
 async function handleLogin(e) {
   e.preventDefault();
   const username = document.getElementById("username").value.trim();
   const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password")?.value || "";
   const emailPrivate = document.getElementById("email-private")?.checked || false;
   if (!username) return;
 
   const alertEl = document.getElementById("login-alert");
   alertEl.style.display = "none";
 
-  // Step 1: check if username exists
-  const check = await api("/api/check-username", {
-    method: "POST",
-    body: JSON.stringify({ username }),
-  });
+  const payload = isAdminUsername(username)
+    ? { username, password }
+    : { username, email, email_private: emailPrivate };
 
-  if (check?.exists) {
-    // Show confirmation dialog
-    _pendingLogin = { username, email, email_private: emailPrivate, force: true };
-    document.getElementById("confirm-dialog").style.display = "block";
-    document.getElementById("username-hint").textContent =
-      `"${username}" has ${check.responses} responses already.`;
-    document.getElementById("username-hint").style.color = "var(--accent-amber)";
-    return;
-  }
-
-  // New user — proceed directly
-  await doLogin({ username, email, email_private: emailPrivate, force: false });
-}
-
-async function confirmLogin() {
-  if (!_pendingLogin) return;
-  await doLogin(_pendingLogin);
-}
-
-function cancelConfirm() {
-  _pendingLogin = null;
-  document.getElementById("confirm-dialog").style.display = "none";
-  document.getElementById("username").focus();
-  document.getElementById("username-hint").textContent = "";
-}
-
-async function doLogin(params) {
   const data = await api("/api/login", {
     method: "POST",
-    body: JSON.stringify(params),
+    body: JSON.stringify(payload),
   });
 
-  if (data?.error) {
-    const alertEl = document.getElementById("login-alert");
-    alertEl.textContent = data.error;
+  if (!data || data.error) {
+    alertEl.textContent = data?.message || data?.error || "Login failed.";
     alertEl.style.display = "block";
+    const hint = document.getElementById("username-hint");
+    if (data?.error === "username_taken" && hint) {
+      hint.textContent = "Pick a fresh username — this one is taken and cannot be reused.";
+      hint.style.color = "var(--accent-red)";
+    }
     return;
   }
 
-  if (data?.token) {
+  if (data.token) {
     localStorage.setItem("token", data.token);
     localStorage.setItem("user", JSON.stringify(data.user));
     location.href = "index.html";
