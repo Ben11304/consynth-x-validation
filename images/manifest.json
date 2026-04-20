@@ -1,182 +1,122 @@
 [
   {
-    "filename": "fog_heavy/0000069.jpg",
-    "condition": "fog_heavy",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "fog_heavy/0000526.jpg",
-    "condition": "fog_heavy",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "fog_heavy/0000789.jpg",
-    "condition": "fog_heavy",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "fog_heavy/0000798.jpg",
-    "condition": "fog_heavy",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "fog_heavy/0001275.jpg",
-    "condition": "fog_heavy",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "fog_medium/0001847.jpg",
-    "condition": "fog_medium",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "fog_medium/0001849.jpg",
-    "condition": "fog_medium",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "fog_medium/0001857.jpg",
-    "condition": "fog_medium",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "fog_medium/0002275.jpg",
-    "condition": "fog_medium",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "fog_medium/0002371.jpg",
-    "condition": "fog_medium",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "night/0001530.jpg",
-    "condition": "night",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "night/0001736.jpg",
-    "condition": "night",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "night/0002615.jpg",
-    "condition": "night",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "night/0002761.jpg",
-    "condition": "night",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "night/0003472.jpg",
-    "condition": "night",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "night_rain/hook216.jpg",
-    "condition": "night_rain",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "night_rain/hptm1497.jpg",
-    "condition": "night_rain",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "night_rain/hptm3098.jpg",
-    "condition": "night_rain",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "night_rain/hptm4860.jpg",
-    "condition": "night_rain",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "night_rain/sz243.jpg",
-    "condition": "night_rain",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "night_snow/hpdr2487.jpg",
-    "condition": "night_snow",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "night_snow/hpdr2699.jpg",
-    "condition": "night_snow",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "night_snow/hpdr3733.jpg",
-    "condition": "night_snow",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "night_snow/hptm1060.jpg",
-    "condition": "night_snow",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "night_snow/hptm1198.jpg",
-    "condition": "night_snow",
-    "source": "synthetic",
-    "dataset": ""
-  },
-  {
-    "filename": "original/0003498.jpg",
+    "filename": "original/0000005.jpg",
     "condition": "original",
     "source": "real",
     "dataset": ""
   },
   {
-    "filename": "original/0003601.jpg",
+    "filename": "original/0001394.jpg",
     "condition": "original",
     "source": "real",
     "dataset": ""
   },
   {
-    "filename": "original/0003761.jpg",
+    "filename": "original/0002665.jpg",
     "condition": "original",
     "source": "real",
     "dataset": ""
   },
   {
-    "filename": "original/0003875.jpg",
+    "filename": "original/0004417.jpg",
     "condition": "original",
     "source": "real",
     "dataset": ""
   },
   {
-    "filename": "original/0004810.jpg",
+    "filename": "original/0007291.jpg",
     "condition": "original",
     "source": "real",
+    "dataset": ""
+  },
+  {
+    "filename": "fog_heavy/0000007.jpg",
+    "condition": "fog_heavy",
+    "source": "synthetic",
+    "dataset": ""
+  },
+  {
+    "filename": "fog_heavy/0000321.jpg",
+    "condition": "fog_heavy",
+    "source": "synthetic",
+    "dataset": ""
+  },
+  {
+    "filename": "fog_heavy/0000645.jpg",
+    "condition": "fog_heavy",
+    "source": "synthetic",
+    "dataset": ""
+  },
+  {
+    "filename": "fog_heavy/0001009.jpg",
+    "condition": "fog_heavy",
+    "source": "synthetic",
+    "dataset": ""
+  },
+  {
+    "filename": "fog_heavy/0001372.jpg",
+    "condition": "fog_heavy",
+    "source": "synthetic",
+    "dataset": ""
+  },
+  {
+    "filename": "fog_medium/0001585.jpg",
+    "condition": "fog_medium",
+    "source": "synthetic",
+    "dataset": ""
+  },
+  {
+    "filename": "fog_medium/0001988.jpg",
+    "condition": "fog_medium",
+    "source": "synthetic",
+    "dataset": ""
+  },
+  {
+    "filename": "fog_medium/0002213.jpg",
+    "condition": "fog_medium",
+    "source": "synthetic",
+    "dataset": ""
+  },
+  {
+    "filename": "fog_medium/0002564.jpg",
+    "condition": "fog_medium",
+    "source": "synthetic",
+    "dataset": ""
+  },
+  {
+    "filename": "fog_medium/0002769.jpg",
+    "condition": "fog_medium",
+    "source": "synthetic",
+    "dataset": ""
+  },
+  {
+    "filename": "night/0000035.jpg",
+    "condition": "night",
+    "source": "synthetic",
+    "dataset": ""
+  },
+  {
+    "filename": "night/0001223.jpg",
+    "condition": "night",
+    "source": "synthetic",
+    "dataset": ""
+  },
+  {
+    "filename": "night/0001983.jpg",
+    "condition": "night",
+    "source": "synthetic",
+    "dataset": ""
+  },
+  {
+    "filename": "night/0002840.jpg",
+    "condition": "night",
+    "source": "synthetic",
+    "dataset": ""
+  },
+  {
+    "filename": "night/0003756.jpg",
+    "condition": "night",
+    "source": "synthetic",
     "dataset": ""
   },
   {
@@ -192,199 +132,199 @@
     "dataset": ""
   },
   {
-    "filename": "small/0002418.jpg",
+    "filename": "small/0001621.jpg",
     "condition": "small",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "small/0004087.jpg",
+    "filename": "small/0002508.jpg",
     "condition": "small",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "small/0004566.jpg",
+    "filename": "small/0003471.jpg",
     "condition": "small",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_rain_0/000003.jpg",
+    "filename": "weather_style_rain_0/0000136.jpg",
     "condition": "weather_style_rain_0",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_rain_0/000014.jpg",
+    "filename": "weather_style_rain_0/0000223.jpg",
     "condition": "weather_style_rain_0",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_rain_0/000035.jpg",
+    "filename": "weather_style_rain_0/0001436.jpg",
     "condition": "weather_style_rain_0",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_rain_0/000081.jpg",
+    "filename": "weather_style_rain_0/0001706.jpg",
     "condition": "weather_style_rain_0",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_rain_0/000094.jpg",
+    "filename": "weather_style_rain_0/0003257.jpg",
     "condition": "weather_style_rain_0",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_rain_1/0001984.jpg",
+    "filename": "weather_style_rain_1/0005017.jpg",
     "condition": "weather_style_rain_1",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_rain_1/0002795.jpg",
+    "filename": "weather_style_rain_1/0005657.jpg",
     "condition": "weather_style_rain_1",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_rain_1/0003103.jpg",
+    "filename": "weather_style_rain_1/0006282.jpg",
     "condition": "weather_style_rain_1",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_rain_1/0004108.jpg",
+    "filename": "weather_style_rain_1/0007976.jpg",
     "condition": "weather_style_rain_1",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_rain_1/0004382.jpg",
+    "filename": "weather_style_rain_1/0008247.jpg",
     "condition": "weather_style_rain_1",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_rain_2/0006830.jpg",
+    "filename": "weather_style_rain_2/0000393.jpg",
     "condition": "weather_style_rain_2",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_rain_2/0010726.jpg",
+    "filename": "weather_style_rain_2/0000853.jpg",
     "condition": "weather_style_rain_2",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_rain_2/0012474.jpg",
+    "filename": "weather_style_rain_2/0001698.jpg",
     "condition": "weather_style_rain_2",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_rain_2/0012871.jpg",
+    "filename": "weather_style_rain_2/0002363.jpg",
     "condition": "weather_style_rain_2",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_rain_2/0013639.jpg",
+    "filename": "weather_style_rain_2/0004360.jpg",
     "condition": "weather_style_rain_2",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_snow_0/000003.jpg",
+    "filename": "weather_style_snow_0/0000020.jpg",
     "condition": "weather_style_snow_0",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_snow_0/000004.jpg",
+    "filename": "weather_style_snow_0/0001212.jpg",
     "condition": "weather_style_snow_0",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_snow_0/000011.jpg",
+    "filename": "weather_style_snow_0/0002018.jpg",
     "condition": "weather_style_snow_0",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_snow_0/000027.jpg",
+    "filename": "weather_style_snow_0/0002795.jpg",
     "condition": "weather_style_snow_0",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_snow_0/000054.jpg",
+    "filename": "weather_style_snow_0/0004270.jpg",
     "condition": "weather_style_snow_0",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_snow_1/0000495.jpg",
+    "filename": "weather_style_snow_1/0004889.jpg",
     "condition": "weather_style_snow_1",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_snow_1/0000579.jpg",
+    "filename": "weather_style_snow_1/0005963.jpg",
     "condition": "weather_style_snow_1",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_snow_1/0001062.jpg",
+    "filename": "weather_style_snow_1/0007568.jpg",
     "condition": "weather_style_snow_1",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_snow_1/0001875.jpg",
+    "filename": "weather_style_snow_1/0007789.jpg",
     "condition": "weather_style_snow_1",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_snow_1/0004657.jpg",
+    "filename": "weather_style_snow_1/0009393.jpg",
     "condition": "weather_style_snow_1",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_snow_2/0007674.jpg",
+    "filename": "weather_style_snow_2/0001016.jpg",
     "condition": "weather_style_snow_2",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_snow_2/0011845.jpg",
+    "filename": "weather_style_snow_2/0001343.jpg",
     "condition": "weather_style_snow_2",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_snow_2/0013007.jpg",
+    "filename": "weather_style_snow_2/0003241.jpg",
     "condition": "weather_style_snow_2",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_snow_2/0013593.jpg",
+    "filename": "weather_style_snow_2/0003521.jpg",
     "condition": "weather_style_snow_2",
     "source": "synthetic",
     "dataset": ""
   },
   {
-    "filename": "weather_style_snow_2/0013732.jpg",
+    "filename": "weather_style_snow_2/0004688.jpg",
     "condition": "weather_style_snow_2",
     "source": "synthetic",
     "dataset": ""
