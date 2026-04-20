@@ -1,4 +1,90 @@
 // ---------------------------------------------------------------------------
+// UI helpers — toasts & modal (replace native alert/confirm)
+// ---------------------------------------------------------------------------
+function _toastRoot() {
+  let r = document.getElementById("toast-root");
+  if (!r) {
+    r = document.createElement("div");
+    r.id = "toast-root";
+    document.body.appendChild(r);
+  }
+  return r;
+}
+
+const TOAST_ICON = { success: "\u2713", error: "!", warn: "!", info: "i" };
+const TOAST_TITLE = { success: "Success", error: "Error", warn: "Warning", info: "Info" };
+
+function toast(message, opts = {}) {
+  const type = opts.type || "info";
+  const title = opts.title || TOAST_TITLE[type];
+  const duration = opts.duration ?? (type === "error" ? 6000 : 3500);
+
+  const el = document.createElement("div");
+  el.className = `toast ${type}`;
+  el.innerHTML = `
+    <span class="toast-icon">${TOAST_ICON[type] || "i"}</span>
+    <div class="toast-body">
+      <div class="toast-title"></div>
+      <div class="toast-msg"></div>
+    </div>
+    <button class="toast-close" aria-label="Close">&times;</button>
+  `;
+  el.querySelector(".toast-title").textContent = title;
+  el.querySelector(".toast-msg").textContent = message;
+  el.querySelector(".toast-close").onclick = () => dismiss();
+
+  _toastRoot().appendChild(el);
+  requestAnimationFrame(() => el.classList.add("show"));
+
+  let dismissed = false;
+  function dismiss() {
+    if (dismissed) return;
+    dismissed = true;
+    el.classList.remove("show");
+    setTimeout(() => el.remove(), 250);
+  }
+  if (duration > 0) setTimeout(dismiss, duration);
+  return dismiss;
+}
+
+function modalConfirm({ title = "Confirm", body = "", confirmText = "OK", cancelText = "Cancel", danger = false }) {
+  return new Promise((resolve) => {
+    const backdrop = document.createElement("div");
+    backdrop.className = "modal-backdrop";
+    backdrop.innerHTML = `
+      <div class="modal-dialog" role="dialog" aria-modal="true">
+        <div class="modal-title"></div>
+        <div class="modal-body"></div>
+        <div class="modal-actions">
+          <button class="btn btn-outline" data-act="cancel"></button>
+          <button class="btn ${danger ? 'btn-primary' : 'btn-primary'}" data-act="confirm" ${danger ? 'style="background:var(--accent-red);border-color:var(--accent-red)"' : ''}></button>
+        </div>
+      </div>
+    `;
+    backdrop.querySelector(".modal-title").textContent = title;
+    backdrop.querySelector(".modal-body").textContent = body;
+    backdrop.querySelector('[data-act="cancel"]').textContent = cancelText;
+    backdrop.querySelector('[data-act="confirm"]').textContent = confirmText;
+
+    function close(result) {
+      backdrop.classList.remove("show");
+      setTimeout(() => backdrop.remove(), 200);
+      resolve(result);
+    }
+    backdrop.querySelector('[data-act="cancel"]').onclick = () => close(false);
+    backdrop.querySelector('[data-act="confirm"]').onclick = () => close(true);
+    backdrop.addEventListener("click", (e) => { if (e.target === backdrop) close(false); });
+    document.addEventListener("keydown", function esc(e) {
+      if (e.key === "Escape") { close(false); document.removeEventListener("keydown", esc); }
+      if (e.key === "Enter")  { close(true);  document.removeEventListener("keydown", esc); }
+    });
+
+    document.body.appendChild(backdrop);
+    requestAnimationFrame(() => backdrop.classList.add("show"));
+  });
+}
+
+// ---------------------------------------------------------------------------
 // Recognition ground-truth mapping (condition → accepted answer labels)
 // ---------------------------------------------------------------------------
 const RECOGNITION_TRUTH = {
@@ -149,14 +235,14 @@ function beginSubmit() { if (_submitting) return false; _submitting = true; retu
 function endSubmit()   { _submitting = false; }
 
 function showSubmitError(msg) {
-  alert(`⚠ Submission failed: ${msg}\n\nYour last answer was NOT saved. Please retry.`);
+  toast(`${msg}. Your last answer was NOT saved. Please retry.`,
+        { type: "error", title: "Submission failed", duration: 8000 });
 }
 
 function wireTaskImage(img, onReady) {
   img.onload = () => { onReady(); };
   img.onerror = () => {
-    alert("⚠ Image failed to load. Skipping to next. If this persists, contact admin.");
-    // Force advance — we won't record this response since user can't actually see it
+    toast("Image failed to load. Skipping to next.", { type: "warn" });
     onReady(true /* skipNoAnswer */);
   };
 }
@@ -183,7 +269,7 @@ async function loadTuring() {
   turingStart = null; // start timer only after img actually renders
   img.onload = () => { turingStart = Date.now(); };
   img.onerror = () => {
-    alert("⚠ Image failed to load. Reloading next image.");
+    toast("Image failed to load. Loading next.", { type: "warn" });
     loadTuring();
   };
   img.src = "images/" + data.image.filename;
@@ -229,7 +315,7 @@ async function loadRealism() {
   realismStart = null;
   img.onload = () => { realismStart = Date.now(); };
   img.onerror = () => {
-    alert("⚠ Image failed to load. Reloading next image.");
+    toast("Image failed to load. Loading next.", { type: "warn" });
     loadRealism();
   };
   img.src = "images/" + data.image.filename;
@@ -284,7 +370,7 @@ async function loadRecognition() {
   recognitionStart = null;
   img.onload = () => { recognitionStart = Date.now(); };
   img.onerror = () => {
-    alert("⚠ Image failed to load. Reloading next image.");
+    toast("Image failed to load. Loading next.", { type: "warn" });
     loadRecognition();
   };
   img.src = "images/" + data.image.filename;
@@ -433,21 +519,39 @@ async function viewUserDetail(userId, username) {
 
 // Admin: reset user
 async function resetUser(userId, username) {
-  if (!confirm(`Reset all responses & assignments for "${username}"? This cannot be undone.`)) return;
+  const ok = await modalConfirm({
+    title: "Reset evaluator?",
+    body: `Delete all responses and assignments for "${username}". This cannot be undone.`,
+    confirmText: "Reset",
+    cancelText: "Cancel",
+    danger: true,
+  });
+  if (!ok) return;
   const data = await api(`/api/admin/user/${userId}/reset`, { method: "POST" });
   if (data?.status === "ok") {
-    alert(`Reset ${username}: ${data.deleted} responses removed.`);
+    toast(`${username}: removed ${data.deleted} responses.`, { type: "success", title: "Reset complete" });
     loadDashboard();
+  } else {
+    toast(data?.message || "Unknown error", { type: "error", title: "Reset failed" });
   }
 }
 
 // Admin: delete user
 async function deleteUser(userId, username) {
-  if (!confirm(`Permanently delete user "${username}" and ALL their data?`)) return;
+  const ok = await modalConfirm({
+    title: "Delete evaluator?",
+    body: `Permanently delete "${username}" and ALL their data. This cannot be undone.`,
+    confirmText: "Delete",
+    cancelText: "Cancel",
+    danger: true,
+  });
+  if (!ok) return;
   const data = await api(`/api/admin/user/${userId}`, { method: "DELETE" });
   if (data?.status === "ok") {
-    alert(`Deleted user "${username}".`);
+    toast(`"${username}" deleted.`, { type: "success", title: "User removed" });
     loadDashboard();
+  } else {
+    toast(data?.message || "Unknown error", { type: "error", title: "Delete failed" });
   }
 }
 
@@ -516,20 +620,25 @@ async function saveSamplingConfig() {
     body: JSON.stringify({ entries }),
   });
   if (data?.status === "ok") {
-    alert(`Saved ${data.updated} condition configs. Applies to new evaluators only.`);
+    toast(`Saved ${data.updated} condition${data.updated === 1 ? "" : "s"}. Applies to new evaluators only.`,
+          { type: "success", title: "Distribution saved" });
   } else {
-    alert(`Save failed: ${data?.error || "unknown"}`);
+    toast(data?.message || data?.error || "Unknown error",
+          { type: "error", title: "Save failed" });
   }
 }
 
 // Admin: load images
 async function loadImages() {
-  const replace = confirm(
-    "Replace existing image registry?\n\n" +
-    "OK  = WIPE all responses + assignments + images, then reload from manifest\n" +
-    "       (use after dataset update; destroys prior evaluation data)\n" +
-    "Cancel = Append only (INSERT OR IGNORE, keeps responses)"
-  );
+  const replace = await modalConfirm({
+    title: "Load images — choose mode",
+    body:
+      "Replace = WIPE existing images + assignments + all evaluation responses, then reload from manifest. Use this after a dataset update.\n\n" +
+      "Append = Only insert new entries; keep existing images, assignments, and responses.",
+    confirmText: "Replace (wipe all)",
+    cancelText: "Append only",
+    danger: true,
+  });
   const res = await fetch("images/manifest.json");
   const images = await res.json();
   const data = await api("/api/images/load", {
@@ -537,13 +646,13 @@ async function loadImages() {
     body: JSON.stringify({ images, replace }),
   });
   if (data?.status === "ok") {
-    const extra = replace
-      ? ` (cleared ${data.cleared || 0} images, wiped ${data.wiped_responses || 0} responses)`
-      : "";
-    alert(`Loaded ${data.loaded} images${extra}!`);
+    const msg = replace
+      ? `Loaded ${data.loaded} images. Cleared ${data.cleared || 0} old images, wiped ${data.wiped_responses || 0} responses.`
+      : `Loaded ${data.loaded} images (append mode).`;
+    toast(msg, { type: "success", title: "Manifest synced" });
     loadDashboard();
   } else if (data?.error) {
-    alert(`Load failed: ${data.error}\n${data.message || ""}`);
+    toast(data.message || data.error, { type: "error", title: "Load failed", duration: 8000 });
   }
 }
 
