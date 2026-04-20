@@ -1,4 +1,32 @@
 // ---------------------------------------------------------------------------
+// Recognition ground-truth mapping (condition → accepted answer labels)
+// ---------------------------------------------------------------------------
+const RECOGNITION_TRUTH = {
+  "original":                ["clear"],
+  "fog_heavy":               ["fog", "fog_heavy"],
+  "fog_medium":              ["fog", "fog_medium"],
+  "night":                   ["night"],
+  "small":                   ["small"],
+  "weather_style_rain_0":    ["rain"],
+  "weather_style_rain_1":    ["rain"],
+  "weather_style_rain_2":    ["rain"],
+  "weather_style_snow_0":    ["snow"],
+  "weather_style_snow_1":    ["snow"],
+  "weather_style_snow_2":    ["snow"],
+  "weather_diff_rain_0":     ["rain"],
+  "weather_diff_rain_1":     ["rain"],
+  "weather_diff_snow_0":     ["snow"],
+  "weather_diff_snow_heavy": ["snow", "snow_heavy"],
+  "weather_diff_snow_light": ["snow", "snow_light"],
+};
+
+function isRecognitionCorrect(condition, answer) {
+  const accepted = RECOGNITION_TRUTH[condition];
+  if (!accepted) return false;
+  return accepted.includes(answer);
+}
+
+// ---------------------------------------------------------------------------
 // Auth helpers
 // ---------------------------------------------------------------------------
 function getToken() { return localStorage.getItem("token"); }
@@ -320,7 +348,7 @@ async function viewUserDetail(userId, username) {
     html += `<h4 style="color:var(--accent-blue);margin:1rem 0 0.5rem">Recognition (${data.recognition.length})</h4>
     <table><thead><tr><th>Image</th><th>Truth</th><th>Answer</th><th>Time</th></tr></thead><tbody>`;
     data.recognition.forEach(r => {
-      const color = r.condition.includes(r.answer) ? 'var(--accent-cyan)' : 'var(--accent-red)';
+      const color = isRecognitionCorrect(r.condition, r.answer) ? 'var(--accent-cyan)' : 'var(--accent-red)';
       html += `<tr><td style="font-size:0.8rem">${r.filename}</td><td>${r.condition}</td><td style="color:${color}">${r.answer}</td><td>${r.response_ms}ms</td></tr>`;
     });
     html += '</tbody></table>';
