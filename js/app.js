@@ -355,8 +355,9 @@ async function deleteUser(userId, username) {
 async function loadImages() {
   const replace = confirm(
     "Replace existing image registry?\n\n" +
-    "OK  = Clear D1 images + assignments, then reload from manifest (use after dataset update)\n" +
-    "Cancel = Append only (INSERT OR IGNORE)"
+    "OK  = WIPE all responses + assignments + images, then reload from manifest\n" +
+    "       (use after dataset update; destroys prior evaluation data)\n" +
+    "Cancel = Append only (INSERT OR IGNORE, keeps responses)"
   );
   const res = await fetch("images/manifest.json");
   const images = await res.json();
@@ -365,8 +366,13 @@ async function loadImages() {
     body: JSON.stringify({ images, replace }),
   });
   if (data?.status === "ok") {
-    alert(`Loaded ${data.loaded} images${replace ? ` (cleared ${data.cleared || 0})` : ""}!`);
+    const extra = replace
+      ? ` (cleared ${data.cleared || 0} images, wiped ${data.wiped_responses || 0} responses)`
+      : "";
+    alert(`Loaded ${data.loaded} images${extra}!`);
     loadDashboard();
+  } else if (data?.error) {
+    alert(`Load failed: ${data.error}\n${data.message || ""}`);
   }
 }
 
