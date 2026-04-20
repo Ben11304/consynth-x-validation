@@ -386,6 +386,9 @@ async function loadDashboard() {
       ).join("");
     }
   }
+
+  // Sampling config section
+  await loadSamplingConfig();
 }
 
 // Admin: user detail
@@ -447,6 +450,77 @@ async function deleteUser(userId, username) {
   if (data?.status === "ok") {
     alert(`Deleted user "${username}".`);
     loadDashboard();
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Admin: Sampling configuration (per-condition sample counts)
+// ---------------------------------------------------------------------------
+let _samplingRows = [];
+
+async function loadSamplingConfig() {
+  const data = await api("/api/admin/sampling-config");
+  if (!data || !Array.isArray(data.rows)) return;
+  _samplingRows = data.rows;
+  renderSamplingConfig();
+  updateSamplingTotals();
+}
+
+function renderSamplingConfig() {
+  const tbody = document.getElementById("sampling-cfg-tbody");
+  if (!tbody) return;
+  tbody.innerHTML = _samplingRows.map((r, i) => `
+    <tr>
+      <td>${r.condition}</td>
+      <td style="color:${r.source === 'real' ? 'var(--accent-cyan)' : 'var(--text-secondary)'}">${r.source}</td>
+      <td style="color:var(--text-muted)">${r.available}</td>
+      <td>
+        <input type="number" min="0" max="${r.available}" value="${r.sample_count}"
+               data-idx="${i}" oninput="onSamplingChange(this)"
+               style="width:80px;padding:0.3rem 0.5rem;background:var(--bg-elevated);color:var(--text-primary);border:1px solid var(--border);border-radius:4px">
+      </td>
+    </tr>
+  `).join("");
+}
+
+function onSamplingChange(input) {
+  const idx = parseInt(input.dataset.idx);
+  let v = parseInt(input.value);
+  if (!Number.isFinite(v) || v < 0) v = 0;
+  const max = _samplingRows[idx].available;
+  if (v > max) { v = max; input.value = v; }
+  _samplingRows[idx].sample_count = v;
+  updateSamplingTotals();
+}
+
+function updateSamplingTotals() {
+  let turing = 0, synth = 0;
+  for (const r of _samplingRows) {
+    const eff = Math.min(r.sample_count, r.available);
+    turing += eff;
+    if (r.source === "synthetic") synth += eff;
+  }
+  document.getElementById("cfg-total-turing").textContent = turing;
+  document.getElementById("cfg-total-realism").textContent = synth;
+  document.getElementById("cfg-total-recognition").textContent = synth;
+}
+
+function setAllSampling(v) {
+  for (const r of _samplingRows) r.sample_count = Math.min(v, r.available);
+  renderSamplingConfig();
+  updateSamplingTotals();
+}
+
+async function saveSamplingConfig() {
+  const entries = _samplingRows.map(r => ({ condition: r.condition, sample_count: r.sample_count }));
+  const data = await api("/api/admin/sampling-config", {
+    method: "POST",
+    body: JSON.stringify({ entries }),
+  });
+  if (data?.status === "ok") {
+    alert(`Saved ${data.updated} condition configs. Applies to new evaluators only.`);
+  } else {
+    alert(`Save failed: ${data?.error || "unknown"}`);
   }
 }
 

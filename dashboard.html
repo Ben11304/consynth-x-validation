@@ -43,6 +43,36 @@
       </div>
     </div>
 
+    <!-- Sampling config -->
+    <div class="card">
+      <h3 class="card-title">Sampling Distribution</h3>
+      <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:0.75rem">
+        Số ảnh/condition cấp cho mỗi evaluator. Thay đổi chỉ áp dụng cho <strong>user mới</strong>; user đã có assignment giữ nguyên.
+        Tổng per task: <span id="cfg-total-turing" style="color:var(--accent-orange);font-weight:700">0</span> turing ·
+        <span id="cfg-total-realism" style="color:var(--accent-amber);font-weight:700">0</span> realism ·
+        <span id="cfg-total-recognition" style="color:var(--accent-blue);font-weight:700">0</span> recognition
+      </p>
+      <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr>
+              <th>Condition</th>
+              <th>Source</th>
+              <th>Available</th>
+              <th>Sample count</th>
+            </tr>
+          </thead>
+          <tbody id="sampling-cfg-tbody"></tbody>
+        </table>
+      </div>
+      <div style="display:flex;gap:0.75rem;margin-top:0.75rem;align-items:center">
+        <button class="btn btn-primary" onclick="saveSamplingConfig()">Save Distribution</button>
+        <button class="btn btn-outline" onclick="loadSamplingConfig()">Reload</button>
+        <button class="btn btn-outline" onclick="setAllSampling(1)">All = 1</button>
+        <button class="btn btn-outline" onclick="setAllSampling(5)">All = 5</button>
+      </div>
+    </div>
+
     <!-- Users -->
     <div class="card">
       <h3 class="card-title">Evaluator Management</h3>
