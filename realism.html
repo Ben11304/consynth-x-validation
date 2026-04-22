@@ -63,44 +63,46 @@
         <span class="progress-text" id="progress-text">0 / 0</span>
       </div>
 
-      <div class="task-image-container">
-        <img id="task-image" src="" alt="Rate this image">
-      </div>
+      <div class="task-split">
+        <div class="task-image-container task-split-image">
+          <img id="task-image" src="" alt="Rate this image">
+        </div>
 
-      <h3 style="text-align:center;margin-bottom:0.5rem">How realistic is this image?</h3>
+        <aside class="task-split-panel">
+          <h3 class="task-prompt">How realistic is this image?</h3>
 
-      <div class="likert-scale">
-        <label class="likert-option">
-          <input type="radio" name="score" value="1" onchange="selectScore()">
-          <div class="likert-circle">1</div>
-          <span class="likert-label">Very Unrealistic</span>
-        </label>
-        <label class="likert-option">
-          <input type="radio" name="score" value="2" onchange="selectScore()">
-          <div class="likert-circle">2</div>
-          <span class="likert-label">Unrealistic</span>
-        </label>
-        <label class="likert-option">
-          <input type="radio" name="score" value="3" onchange="selectScore()">
-          <div class="likert-circle">3</div>
-          <span class="likert-label">Neutral</span>
-        </label>
-        <label class="likert-option">
-          <input type="radio" name="score" value="4" onchange="selectScore()">
-          <div class="likert-circle">4</div>
-          <span class="likert-label">Realistic</span>
-        </label>
-        <label class="likert-option">
-          <input type="radio" name="score" value="5" onchange="selectScore()">
-          <div class="likert-circle">5</div>
-          <span class="likert-label">Indistinguishable</span>
-        </label>
-      </div>
+          <div class="likert-scale likert-vertical">
+            <label class="likert-option">
+              <input type="radio" name="score" value="1" onchange="selectScore()">
+              <div class="likert-circle">1</div>
+              <span class="likert-label">Very Unrealistic</span>
+            </label>
+            <label class="likert-option">
+              <input type="radio" name="score" value="2" onchange="selectScore()">
+              <div class="likert-circle">2</div>
+              <span class="likert-label">Unrealistic</span>
+            </label>
+            <label class="likert-option">
+              <input type="radio" name="score" value="3" onchange="selectScore()">
+              <div class="likert-circle">3</div>
+              <span class="likert-label">Neutral</span>
+            </label>
+            <label class="likert-option">
+              <input type="radio" name="score" value="4" onchange="selectScore()">
+              <div class="likert-circle">4</div>
+              <span class="likert-label">Realistic</span>
+            </label>
+            <label class="likert-option">
+              <input type="radio" name="score" value="5" onchange="selectScore()">
+              <div class="likert-circle">5</div>
+              <span class="likert-label">Indistinguishable</span>
+            </label>
+          </div>
 
-      <div style="text-align:center">
-        <button class="btn btn-primary btn-lg" id="submit-realism" disabled onclick="submitRealism()">Submit</button>
+          <button class="btn btn-primary btn-lg btn-block" id="submit-realism" disabled onclick="submitRealism()">Submit</button>
+          <p class="shortcut-hint">Keyboard: <kbd>1</kbd>-<kbd>5</kbd> select, <kbd>Enter</kbd> submit</p>
+        </aside>
       </div>
-      <p class="shortcut-hint">Keyboard: <kbd>1</kbd>-<kbd>5</kbd> to select, <kbd>Enter</kbd> to submit</p>
     </div>
   </div>
 
