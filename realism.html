@@ -18,54 +18,94 @@
   </nav>
 
   <div class="container" id="task-area" data-task="realism">
-    <div class="progress-bar-container">
-      <div class="progress-bar"><div class="progress-bar-fill" id="progress-fill"></div></div>
-      <span class="progress-text" id="progress-text">0 / 0</span>
+    <div id="realism-intro" class="intro-panel">
+      <h2 class="intro-title">Realism Rating Task</h2>
+      <p class="intro-sub">Read the short instructions below, then click <strong>Start the Test</strong> when you are ready.</p>
+
+      <div class="intro-section">
+        <h3>How to rate</h3>
+        <ol class="intro-steps">
+          <li>Look at each construction site image carefully.</li>
+          <li>Decide how <strong>realistic</strong> the weather or lighting looks.</li>
+          <li>Pick a score from <strong>1 to 5</strong> using the buttons or the keyboard (<kbd>1</kbd>–<kbd>5</kbd>).</li>
+          <li>Click <strong>Submit</strong> or press <kbd>Enter</kbd> to save and move to the next image.</li>
+        </ol>
+      </div>
+
+      <div class="intro-section">
+        <h3>The 1–5 scale</h3>
+        <ul class="intro-scale">
+          <li><span class="scale-num">1</span><span><strong>Very unrealistic</strong> — obvious artifacts, clearly fake</span></li>
+          <li><span class="scale-num">2</span><span><strong>Unrealistic</strong> — noticeable issues, does not look right</span></li>
+          <li><span class="scale-num">3</span><span><strong>Neutral</strong> — some parts look real, some do not</span></li>
+          <li><span class="scale-num">4</span><span><strong>Realistic</strong> — mostly convincing, minor imperfections</span></li>
+          <li><span class="scale-num">5</span><span><strong>Indistinguishable</strong> — cannot tell it from a real photo</span></li>
+        </ul>
+      </div>
+
+      <div class="intro-section">
+        <h3>Good to know</h3>
+        <ul class="intro-notes">
+          <li>There are <strong>no wrong answers</strong>. We are measuring human perception.</li>
+          <li>Your ratings <strong>auto-save</strong>. You can stop at any time and come back later with the same username.</li>
+          <li>Trust your first impression — do not overthink.</li>
+        </ul>
+      </div>
+
+      <div style="text-align:center;margin-top:2rem">
+        <button class="btn btn-primary btn-lg" onclick="startRealism()">Start the Test</button>
+      </div>
     </div>
 
-    <div class="task-image-container">
-      <img id="task-image" src="" alt="Rate this image">
-    </div>
+    <div id="realism-test" style="display:none">
+      <div class="progress-bar-container">
+        <div class="progress-bar"><div class="progress-bar-fill" id="progress-fill"></div></div>
+        <span class="progress-text" id="progress-text">0 / 0</span>
+      </div>
 
-    <h3 style="text-align:center;margin-bottom:0.5rem">How realistic is this image?</h3>
+      <div class="task-image-container">
+        <img id="task-image" src="" alt="Rate this image">
+      </div>
 
-    <div class="likert-scale">
-      <label class="likert-option">
-        <input type="radio" name="score" value="1" onchange="selectScore()">
-        <div class="likert-circle">1</div>
-        <span class="likert-label">Very Unrealistic</span>
-      </label>
-      <label class="likert-option">
-        <input type="radio" name="score" value="2" onchange="selectScore()">
-        <div class="likert-circle">2</div>
-        <span class="likert-label">Unrealistic</span>
-      </label>
-      <label class="likert-option">
-        <input type="radio" name="score" value="3" onchange="selectScore()">
-        <div class="likert-circle">3</div>
-        <span class="likert-label">Neutral</span>
-      </label>
-      <label class="likert-option">
-        <input type="radio" name="score" value="4" onchange="selectScore()">
-        <div class="likert-circle">4</div>
-        <span class="likert-label">Realistic</span>
-      </label>
-      <label class="likert-option">
-        <input type="radio" name="score" value="5" onchange="selectScore()">
-        <div class="likert-circle">5</div>
-        <span class="likert-label">Indistinguishable</span>
-      </label>
-    </div>
+      <h3 style="text-align:center;margin-bottom:0.5rem">How realistic is this image?</h3>
 
-    <div style="text-align:center">
-      <button class="btn btn-primary btn-lg" id="submit-realism" disabled onclick="submitRealism()">Submit</button>
+      <div class="likert-scale">
+        <label class="likert-option">
+          <input type="radio" name="score" value="1" onchange="selectScore()">
+          <div class="likert-circle">1</div>
+          <span class="likert-label">Very Unrealistic</span>
+        </label>
+        <label class="likert-option">
+          <input type="radio" name="score" value="2" onchange="selectScore()">
+          <div class="likert-circle">2</div>
+          <span class="likert-label">Unrealistic</span>
+        </label>
+        <label class="likert-option">
+          <input type="radio" name="score" value="3" onchange="selectScore()">
+          <div class="likert-circle">3</div>
+          <span class="likert-label">Neutral</span>
+        </label>
+        <label class="likert-option">
+          <input type="radio" name="score" value="4" onchange="selectScore()">
+          <div class="likert-circle">4</div>
+          <span class="likert-label">Realistic</span>
+        </label>
+        <label class="likert-option">
+          <input type="radio" name="score" value="5" onchange="selectScore()">
+          <div class="likert-circle">5</div>
+          <span class="likert-label">Indistinguishable</span>
+        </label>
+      </div>
+
+      <div style="text-align:center">
+        <button class="btn btn-primary btn-lg" id="submit-realism" disabled onclick="submitRealism()">Submit</button>
+      </div>
+      <p class="shortcut-hint">Keyboard: <kbd>1</kbd>-<kbd>5</kbd> to select, <kbd>Enter</kbd> to submit</p>
     </div>
-    <p class="shortcut-hint">Keyboard: <kbd>1</kbd>-<kbd>5</kbd> to select, <kbd>Enter</kbd> to submit</p>
   </div>
 
   <script src="js/config.js"></script>
   <script src="js/app.js"></script>
-  <script>loadRealism();</script>
   <footer class="site-footer">
     <strong>ConSynth-X</strong> — Synthetic Construction Image Benchmark<br>
     Viet Huy Duong &amp; Ruoxin Xiong<br>

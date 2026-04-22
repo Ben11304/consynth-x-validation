@@ -294,12 +294,31 @@ let realismStart;
 const _realism404Counts = new Map(); // imageId -> consecutive 404 count
 const REALISM_404_MAX = 3;
 
+function startRealism() {
+  const intro = document.getElementById("realism-intro");
+  const test = document.getElementById("realism-test");
+  if (intro) intro.style.display = "none";
+  if (test) test.style.display = "block";
+  loadRealism();
+}
+
+function renderRealismComplete() {
+  document.getElementById("task-area").innerHTML = `
+    <div class="complete-container">
+      <div class="complete-icon">&#9829;</div>
+      <h2>Thank You!</h2>
+      <p class="complete-message">You have rated all the images assigned to you.</p>
+      <p class="complete-thanks">Your contribution is incredibly meaningful to us &mdash; it directly shapes how we evaluate synthetic construction imagery for this research.</p>
+      <p class="complete-thanks-vi">&Eth;&oacute;ng g&oacute;p c&#7911;a b&#7841;n c&oacute; &yacute; ngh&#297;a r&#7845;t l&#7899;n &#273;&#7889;i v&#7899;i ch&uacute;ng t&ocirc;i.</p>
+      <a href="index.html" class="btn btn-primary">Back to Home</a>
+    </div>`;
+}
+
 async function loadRealism() {
   if (!requireAuth()) return;
   const data = await api("/api/task/realism");
   if (!data || data.done === true || !data.image) {
-    document.getElementById("task-area").innerHTML =
-      '<div class="complete-container"><div class="complete-icon">&#10003;</div><h2>Realism Rating Complete!</h2><p>You have rated all images.</p><a href="index.html" class="btn btn-primary">Back to Home</a></div>';
+    renderRealismComplete();
     return;
   }
 

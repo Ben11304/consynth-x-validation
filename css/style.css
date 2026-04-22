@@ -722,15 +722,144 @@ td { color: var(--text-secondary); }
 }
 
 /* ===== Task complete ===== */
+/* ===== Realism intro panel (shown before test starts) ===== */
+.intro-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem 2rem;
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+.intro-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+}
+
+.intro-sub {
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+}
+
+.intro-section {
+    margin-bottom: 1.75rem;
+}
+
+.intro-section h3 {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--accent-orange);
+    margin-bottom: 0.8rem;
+}
+
+.intro-steps,
+.intro-notes {
+    padding-left: 1.2rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+.intro-steps li,
+.intro-notes li { margin-bottom: 0.4rem; }
+.intro-steps li strong,
+.intro-notes li strong { color: var(--text-primary); }
+
+.intro-scale {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+}
+
+.intro-scale li {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.7rem 1rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+}
+
+.intro-scale .scale-num {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+    background: linear-gradient(135deg, var(--accent-orange), var(--accent-amber));
+    color: #fff;
+    border-radius: 50%;
+}
+
+.intro-scale li strong { color: var(--text-primary); }
+
+.intro-panel kbd {
+    display: inline-block;
+    padding: 0.05rem 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-accent);
+    border-radius: 3px;
+    color: var(--text-primary);
+}
+
+/* ===== Task card CTA (home page) ===== */
+.task-card-cta {
+    margin-top: 0.8rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-orange);
+    font-weight: 600;
+}
+
+/* ===== Completion / thank-you ===== */
 .complete-container {
     text-align: center;
     padding: 5rem 2rem;
+    max-width: 680px;
+    margin: 0 auto;
 }
 
 .complete-icon {
     font-size: 4rem;
     margin-bottom: 1rem;
-    color: var(--accent-cyan);
+    color: var(--accent-red);
+    animation: heart-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes heart-pulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.1); }
+}
+
+.complete-thanks {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-top: 1rem;
+    font-size: 1rem;
+}
+
+.complete-thanks-vi {
+    color: var(--accent-amber);
+    font-style: italic;
+    margin: 1.25rem 0 2rem;
+    font-size: 0.95rem;
 }
 
 .complete-container h2 {
