@@ -189,7 +189,57 @@ body::before {
 
 .login-card {
     width: 100%;
-    max-width: 420px;
+    max-width: 480px;
+}
+
+.login-guide {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent-orange);
+    border-radius: var(--radius);
+    padding: 1rem 1.1rem 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.login-guide h3 {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent-orange);
+    margin-bottom: 0.7rem;
+}
+
+.login-guide ol {
+    padding-left: 1.1rem;
+    margin: 0 0 0.8rem;
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+    line-height: 1.55;
+}
+
+.login-guide ol li { margin-bottom: 0.35rem; }
+.login-guide ol li strong { color: var(--text-primary); }
+
+.login-guide kbd {
+    display: inline-block;
+    padding: 0.05rem 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-accent);
+    border-radius: 3px;
+    color: var(--text-primary);
+}
+
+.login-guide-meta {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0;
+    padding-top: 0.5rem;
+    border-top: 1px dashed var(--border);
 }
 
 .login-card h1 {

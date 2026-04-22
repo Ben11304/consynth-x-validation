@@ -217,9 +217,8 @@ async function loadIndex() {
   const data = await api("/api/stats");
   if (!data) return;
 
-  document.getElementById("turing-progress").textContent = `${data.turing_done} / ${data.turing_total}`;
-  document.getElementById("realism-progress").textContent = `${data.realism_done} / ${data.realism_total}`;
-  document.getElementById("recognition-progress").textContent = `${data.recognition_done} / ${data.recognition_total}`;
+  const realismEl = document.getElementById("realism-progress");
+  if (realismEl) realismEl.textContent = `${data.realism_done} / ${data.realism_total}`;
 }
 
 // ---------------------------------------------------------------------------
