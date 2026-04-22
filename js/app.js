@@ -291,6 +291,8 @@ async function submitTuring(answer) {
 // Realism Rating
 // ---------------------------------------------------------------------------
 let realismStart;
+const _realism404Counts = new Map(); // imageId -> consecutive 404 count
+const REALISM_404_MAX = 3;
 
 async function loadRealism() {
   if (!requireAuth()) return;
@@ -305,11 +307,22 @@ async function loadRealism() {
   document.getElementById("progress-fill").style.width = pct + "%";
   document.getElementById("progress-text").textContent = `${data.done} / ${data.total}`;
   const img = document.getElementById("task-image");
-  img.dataset.imageId = data.image.id;
+  const imgId = data.image.id;
+  img.dataset.imageId = imgId;
   realismStart = null;
-  img.onload = () => { realismStart = Date.now(); };
+  img.onload = () => {
+    realismStart = Date.now();
+    _realism404Counts.delete(imgId);
+  };
   img.onerror = () => {
-    toast("Image failed to load. Loading next.", { type: "warn" });
+    const n = (_realism404Counts.get(imgId) || 0) + 1;
+    _realism404Counts.set(imgId, n);
+    if (n >= REALISM_404_MAX) {
+      toast(`Image ${data.image.filename} missing after ${REALISM_404_MAX} retries. Please contact the admin.`,
+            { type: "error", title: "Image unavailable", duration: 10000 });
+      return; // stop the retry loop; user must reload manually
+    }
+    toast("Image failed to load. Trying next…", { type: "warn" });
     loadRealism();
   };
   img.src = "images/" + data.image.filename;
@@ -325,7 +338,11 @@ function selectScore() {
 async function submitRealism() {
   if (!beginSubmit()) return;
   try {
-    if (!realismStart) return;
+    if (!realismStart) {
+      toast("Wait for the image to finish loading before submitting.",
+            { type: "warn", duration: 3000 });
+      return;
+    }
     const sel = document.querySelector('input[name="score"]:checked');
     if (!sel) return;
     const score = parseInt(sel.value);
