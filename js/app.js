@@ -635,19 +635,38 @@ async function loadImages() {
   });
   const res = await fetch("images/manifest.json");
   const images = await res.json();
-  const data = await api("/api/images/load", {
-    method: "POST",
-    body: JSON.stringify({ images, replace }),
-  });
-  if (data?.status === "ok") {
-    const msg = replace
-      ? `Loaded ${data.loaded} images. Cleared ${data.cleared || 0} old images, wiped ${data.wiped_responses || 0} responses.`
-      : `Loaded ${data.loaded} images (append mode).`;
-    toast(msg, { type: "success", title: "Manifest synced" });
-    loadDashboard();
-  } else if (data?.error) {
-    toast(data.message || data.error, { type: "error", title: "Load failed", duration: 8000 });
+
+  // Chunk from the frontend so each Worker invocation stays under Cloudflare
+  // free-plan subrequest / CPU limits (50 subrequests, 10ms CPU).
+  const CHUNK = 500;
+  let loaded = 0, cleared = 0, wiped = 0;
+
+  for (let i = 0; i < images.length; i += CHUNK) {
+    const chunk = images.slice(i, i + CHUNK);
+    const isFirst = i === 0;
+    const data = await api("/api/images/load", {
+      method: "POST",
+      body: JSON.stringify({ images: chunk, replace: isFirst && replace }),
+    });
+    if (!data || data.error) {
+      toast(data?.message || data?.error || "Load failed mid-way",
+            { type: "error", title: "Load failed", duration: 8000 });
+      loadDashboard();
+      return;
+    }
+    loaded += data.loaded || 0;
+    if (isFirst) {
+      cleared = data.cleared || 0;
+      wiped = data.wiped_responses || 0;
+    }
+    toast(`Loading ${loaded}/${images.length}…`, { type: "info", duration: 1500 });
   }
+
+  const msg = replace
+    ? `Loaded ${loaded} images. Cleared ${cleared} old images, wiped ${wiped} responses.`
+    : `Loaded ${loaded} images (append mode).`;
+  toast(msg, { type: "success", title: "Manifest synced" });
+  loadDashboard();
 }
 
 // Admin: export CSV
