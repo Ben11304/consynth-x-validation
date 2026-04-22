@@ -309,7 +309,6 @@ function renderRealismComplete() {
       <h2>Thank You!</h2>
       <p class="complete-message">You have rated all the images assigned to you.</p>
       <p class="complete-thanks">Your contribution is incredibly meaningful to us &mdash; it directly shapes how we evaluate synthetic construction imagery for this research.</p>
-      <p class="complete-thanks-vi">&Eth;&oacute;ng g&oacute;p c&#7911;a b&#7841;n c&oacute; &yacute; ngh&#297;a r&#7845;t l&#7899;n &#273;&#7889;i v&#7899;i ch&uacute;ng t&ocirc;i.</p>
       <a href="index.html" class="btn btn-primary">Back to Home</a>
     </div>`;
 }
