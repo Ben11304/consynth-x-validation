@@ -40,6 +40,21 @@
           <label for="password">Admin password</label>
           <input type="password" id="password" autocomplete="current-password" placeholder="Required for admin">
         </div>
+        <div class="form-group" id="major-group">
+          <label for="major">Major / Field of study</label>
+          <input type="text" id="major" placeholder="e.g., Construction Management, Civil Engineering" maxlength="120" required>
+        </div>
+        <div class="form-group" id="education-group">
+          <label>Education level</label>
+          <div style="display:flex;gap:1.25rem;margin-top:0.3rem">
+            <label style="text-transform:none;letter-spacing:0;font-size:0.9rem;color:var(--text-secondary);display:flex;align-items:center;gap:0.4rem;margin:0">
+              <input type="radio" name="education_level" value="undergraduate" style="width:auto;accent-color:var(--accent-orange)" required> Undergraduate
+            </label>
+            <label style="text-transform:none;letter-spacing:0;font-size:0.9rem;color:var(--text-secondary);display:flex;align-items:center;gap:0.4rem;margin:0">
+              <input type="radio" name="education_level" value="graduate" style="width:auto;accent-color:var(--accent-orange)"> Graduate
+            </label>
+          </div>
+        </div>
         <button type="submit" class="btn btn-primary btn-block" id="login-btn" style="margin-top:1.25rem">Start Evaluation</button>
       </form>
     </div>
