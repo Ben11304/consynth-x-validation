@@ -157,20 +157,14 @@ function isAdminUsername(s) {
 function onUsernameChange() {
   const uname = document.getElementById("username").value;
   const pwGroup = document.getElementById("password-group");
-  const emailGroup = document.getElementById("email-group");
-  const emailPrivGroup = document.getElementById("email-private-group");
   const admin = isAdminUsername(uname);
   if (pwGroup) pwGroup.style.display = admin ? "" : "none";
-  if (emailGroup) emailGroup.style.display = admin ? "none" : "";
-  if (emailPrivGroup) emailPrivGroup.style.display = admin ? "none" : "flex";
 }
 
 async function handleLogin(e) {
   e.preventDefault();
   const username = document.getElementById("username").value.trim();
-  const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password")?.value || "";
-  const emailPrivate = document.getElementById("email-private")?.checked || false;
   if (!username) return;
 
   const alertEl = document.getElementById("login-alert");
@@ -178,7 +172,7 @@ async function handleLogin(e) {
 
   const payload = isAdminUsername(username)
     ? { username, password }
-    : { username, email, email_private: emailPrivate };
+    : { username };
 
   const data = await api("/api/login", {
     method: "POST",
@@ -462,7 +456,6 @@ async function loadDashboard() {
   tbody.innerHTML = data.users.map(u => `
     <tr>
       <td><strong style="color:var(--text-primary)">${u.username}</strong></td>
-      <td>${u.email_private ? '<span style="color:var(--text-muted)">[private]</span>' : (u.email || '-')}</td>
       <td>${u.turing}</td>
       <td>${u.realism}</td>
       <td>${u.recognition}</td>
