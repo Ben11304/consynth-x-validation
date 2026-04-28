@@ -154,28 +154,34 @@ function isAdminUsername(s) {
   return (s || "").trim().toLowerCase() === "admin";
 }
 
+function generateRandomUsername() {
+  const input = document.getElementById("username");
+  if (!input) return;
+  const randomPart = Math.floor(100000 + Math.random() * 900000);
+  input.value = `participant-${randomPart}`;
+  input.focus();
+  onUsernameChange();
+}
+
 function onUsernameChange() {
   const uname = document.getElementById("username").value;
   const pwGroup = document.getElementById("password-group");
-  const majorGroup = document.getElementById("major-group");
-  const eduGroup = document.getElementById("education-group");
+  const capabilityGroup = document.getElementById("capability-group");
   const admin = isAdminUsername(uname);
   if (pwGroup) pwGroup.style.display = admin ? "" : "none";
-  if (majorGroup) majorGroup.style.display = admin ? "none" : "";
-  if (eduGroup) eduGroup.style.display = admin ? "none" : "";
+  if (capabilityGroup) capabilityGroup.style.display = admin ? "none" : "";
   // Toggle required so admin form submits cleanly.
-  const majorEl = document.getElementById("major");
-  if (majorEl) majorEl.required = !admin;
-  document.querySelectorAll('input[name="education_level"]').forEach(r => r.required = !admin);
+  const capabilityEl = document.getElementById("capability-confirmed");
+  if (capabilityEl) capabilityEl.required = !admin;
 }
 
 async function handleLogin(e) {
   e.preventDefault();
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password")?.value || "";
-  const major = document.getElementById("major")?.value.trim() || "";
-  const eduChecked = document.querySelector('input[name="education_level"]:checked');
-  const education_level = eduChecked ? eduChecked.value : "";
+  const capabilityConfirmed = document.getElementById("capability-confirmed")?.checked || false;
+  const capability = capabilityConfirmed ? "Confirmed construction image fidelity evaluation experience" : "";
+  const education_level = "not_collected";
   if (!username) return;
 
   const alertEl = document.getElementById("login-alert");
@@ -183,7 +189,7 @@ async function handleLogin(e) {
 
   const payload = isAdminUsername(username)
     ? { username, password }
-    : { username, major, education_level };
+    : { username, major: capability, education_level };
 
   const data = await api("/api/login", {
     method: "POST",
@@ -468,7 +474,6 @@ async function loadDashboard() {
     <tr>
       <td><strong style="color:var(--text-primary)">${u.username}</strong></td>
       <td>${u.major || '-'}</td>
-      <td>${u.education_level ? u.education_level.charAt(0).toUpperCase() + u.education_level.slice(1) : '-'}</td>
       <td>${u.turing}</td>
       <td>${u.realism}</td>
       <td>${u.recognition}</td>
